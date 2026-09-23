@@ -2,6 +2,11 @@
 
 {
 
+  services.xserver.xkb = {
+    layout = "de";
+    variant = "";
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

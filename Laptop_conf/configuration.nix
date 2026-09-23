@@ -1,11 +1,18 @@
 { config, pkgs, ... }:
 
+
+let
+  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-26.05.tar.gz;
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
+      (import "${home-manager}/nixos")
       ./hardware-configuration.nix
       ./poweroptimizaion.nix
-      ./kde.nix
+      #./kde.nix
+      ./i3.nix
       ./systemManagement.nix
     ];
 
@@ -32,16 +39,45 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."niklas" = {
+
+
+  home-manager = {
+    useUserPackages = true;
+    users.niklas = { pkgs, ... }: {
+      home.packages = [
+	    
+      ];
+      home.stateVersion = "26.05";
+    };
+  };
+
+    
+users.users."niklas" = {
     isNormalUser = true;
     description = "niklas";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       pkgs.heroic
-      pkgs.vscode
+      pkgs.obsidian
+      pkgs.libreoffice
+#      pkgs.steam
+      pkgs.gimp     
+      kdePackages.dolphin
+      kdePackages.kcalc
+      kdePackages.kate
+
+      
+      #Dev Tools
+      pkgs.texliveFull
+      pkgs.vscode-fhs
+      pkgs.python3
       pkgs.maven
       pkgs.git
-      pkgs.obsidian
+      
+      #Shell
+      pkgs.kitty
+      pkgs.fastfetch
+      pkgs.htop
     ];
   };
   programs.java.enable = true;
@@ -53,7 +89,10 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+     vim
+     brightnessctl
+     pkgs.home-manager
+     pkgs.pavucontrol
   ];
 
   system.stateVersion = "26.05"; # Did you read the comment?
