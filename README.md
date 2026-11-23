@@ -1,3 +1,6 @@
+# ARCHIVE SINCE MOVDET TO ANOTHER GIT REPO
+
+
 # nixos
 
 
